@@ -42,3 +42,11 @@ res$plot
 ```
 
 <img src="man/figures/README-example-1.png" width="100%" />
+
+## Citation
+
+If you use `khcnet` in academic work, please cite:
+
+Terashita, Kazuhiro (2025). *khcnet: KH Coder-style Co-occurrence
+Network Visualization*. GitHub repository.
+<https://github.com/namiterashita/khcnet>

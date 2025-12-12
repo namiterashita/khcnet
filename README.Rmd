@@ -48,3 +48,11 @@ res <- khcnet(dfm, edges = 80, community = "fast_greedy", fill_alpha = 0.6)
 res$plot
 ```
 
+## Citation
+
+If you use `khcnet` in academic work, please cite:
+
+Terashita, Kazuhiro (2025).
+*khcnet: KH Coder-style Co-occurrence Network Visualization*.
+GitHub repository. https://github.com/namiterashita/khcnet
+

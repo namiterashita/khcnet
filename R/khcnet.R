@@ -7,6 +7,7 @@
 #' - Option to control node fill transparency in color mode
 #' - CJK font family and label color options
 #' - Option to show size legend for node frequency
+#' - Option to show/hide edge linetype legend with fixed meanings
 #'
 #' @param dfm A quanteda dfm (doc x term).
 #' @param community Community detection method:
@@ -22,6 +23,8 @@
 #' @param fill_alpha In color mode (bw_groups = FALSE), node fill alpha in [0, 1].
 #'   Ignored in grayscale mode.
 #' @param show_size_legend If TRUE, show size legend for node frequency when use_freq_as_size = TRUE.
+#' @param show_linetype_legend If TRUE, show legend for edge linetypes:
+#'   solid = within-community co-occurrence; dotted = between-community co-occurrence.
 #' @param font_family Font family for node labels (e.g., "Noto Sans CJK JP", "Noto Sans CJK KR").
 #' @param label_colour Color for node labels (e.g., "black", "gray20", "#333333").
 #' @param label_repel If TRUE, repel node labels (requires ggrepel; falls back if missing).
@@ -42,6 +45,7 @@ khcnet <- function(
     bw_groups = FALSE,
     fill_alpha = 0.75,
     show_size_legend = FALSE,
+    show_linetype_legend = FALSE,
     font_family = "sans",
     label_colour = "black",
     label_repel = TRUE,
@@ -96,7 +100,6 @@ khcnet <- function(
     edges <- as.integer(edges)
     if (is.na(edges) || edges < 1) stop("`edges` must be a positive integer.")
     edges <- min(edges, nrow(el))
-    # IMPORTANT: guard against probs outside [0,1]
     probs <- 1 - edges / nrow(el)
     probs <- max(min(probs, 1), 0)
     th_use <- as.numeric(stats::quantile(el$weight, probs = probs, names = FALSE))
@@ -168,20 +171,28 @@ khcnet <- function(
   node_tbl <- tidygraph::as_tibble(tg, active = "nodes")
   size_aes <- if (all(node_tbl$freq_plot <= 0)) 1 else "freq_plot"
 
-  # Edge layer (linetype identity)
+  # Edges (optionally show legend)
   p <- ggraph::ggraph(tg, layout = layout) +
     ggraph::geom_edge_link(
       ggplot2::aes(linetype = lty),
       colour = "grey50",
-      linewidth = 0.5
+      linewidth = 0.5,
+      show.legend = isTRUE(show_linetype_legend)
     ) +
-    ggplot2::scale_linetype_identity() +
+    ggplot2::scale_linetype_manual(
+      values = c(solid = "solid", dotted = "dotted"),
+      breaks = c("solid", "dotted"),
+      labels = c(
+        solid  = "Within-community co-occurrence",
+        dotted = "Between-community co-occurrence"
+      ),
+      name = "Edge type"
+    ) +
     ggplot2::coord_fixed() +
     ggplot2::theme_void(base_family = font_family)
 
-  # Node layer
+  # Nodes
   if (!isTRUE(bw_groups)) {
-    # Color mode: allow alpha control via fill_alpha
     fill_alpha <- as.numeric(fill_alpha)
     if (is.na(fill_alpha)) fill_alpha <- 0.75
     fill_alpha <- max(min(fill_alpha, 1), 0)
@@ -195,7 +206,6 @@ khcnet <- function(
         alpha = fill_alpha
       )
   } else {
-    # Grayscale mode: alpha fixed for readability
     p <- p +
       ggraph::geom_node_point(
         ggplot2::aes(size = .data[[size_aes]], fill = comm),
@@ -255,10 +265,14 @@ khcnet <- function(
 
   # Fill scale: color vs grayscale
   if (isTRUE(bw_groups)) {
-    # Make the darkest shade brighter (avoid near-black)
     p <- p + ggplot2::scale_fill_grey(start = 0.88, end = 0.35, name = "Community")
   } else {
     p <- p + ggplot2::scale_fill_hue(name = "Community")
+  }
+
+  # If legend is hidden, also remove scale guide defensively
+  if (!isTRUE(show_linetype_legend)) {
+    p <- p + ggplot2::guides(linetype = "none")
   }
 
   info <- list(
