@@ -1,0 +1,26 @@
+Package: khcnet
+Type: Package
+Title: KH Coder-style Co-occurrence Network Visualization
+Version: 0.1.0
+Authors@R:
+    person("Kazuhiro", "Terashita",
+           role = c("aut", "cre"),
+           email = "your@email",
+           comment = c(ORCID = "0000-0000-0000-0000"))
+Description:
+    Provides reproducible, publication-ready co-occurrence network
+    visualization inspired by KH Coder, optimized for quanteda,
+    tidygraph, and ggraph workflows.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports:
+    igraph,
+    ggplot2,
+    tidygraph,
+    ggraph,
+    scales
+Suggests:
+    quanteda
+RoxygenNote: 7.3.3
+Roxygen: list(markdown = TRUE)

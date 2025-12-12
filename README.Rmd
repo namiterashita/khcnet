@@ -1,0 +1,50 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# khcnet
+
+## Example
+
+This is a basic example which shows you how to solve a common problem:
+
+```{r example}
+library(khcnet)
+library(quanteda)
+
+corp <- quanteda::data_char_ukimmig2010
+
+dfm  <- quanteda::tokens(corp)|>
+  tokens_remove(stopwords("en", source = "marimo"))|>
+  dfm()
+
+dfm_net <- dfm_select(dfm, names(topfeatures(dfm, 50))) 
+
+res <- khcnet(
+  dfm_net,
+  edges = 80, 
+  community = "fast_greedy", 
+  bw_groups = FALSE,
+  fill_alpha = 0.55,     
+  font_family = "Noto Sans CJK JP",
+  show_size_legend = TRUE,
+  bubble_size = 100,
+  label_colour = "black",
+  label_repel = TRUE
+)
+
+res <- khcnet(dfm, edges = 80, community = "fast_greedy", fill_alpha = 0.6)
+res$plot
+```
+
