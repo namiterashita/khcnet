@@ -3,49 +3,42 @@
 
 # khcnet
 
-<!-- badges: start -->
-
-<!-- badges: end -->
-
-The goal of khcnet is to …
-
-## Installation
-
-You can install the development version of khcnet like so:
-
-``` r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
-```
-
 ## Example
 
 This is a basic example which shows you how to solve a common problem:
 
 ``` r
 library(khcnet)
-## basic example code
+library(quanteda)
+#> Package version: 4.3.0
+#> Unicode version: 14.0
+#> ICU version: 71.1
+#> Parallel computing: disabled
+#> See https://quanteda.io for tutorials and examples.
+
+corp <- quanteda::data_char_sampletext
+
+dfm  <- quanteda::tokens(corp)|>
+  tokens_remove(stopwords("en", source = "marimo"))|>
+  dfm()
+
+dfm_net <- dfm_select(dfm, names(topfeatures(dfm, 50))) 
+
+res <- khcnet(
+  dfm_net,
+  edges = 80, 
+  community = "fast_greedy", 
+  bw_groups = FALSE,
+  fill_alpha = 0.55,     
+  font_family = "Noto Sans CJK JP",
+  show_size_legend = TRUE,
+  bubble_size = 100,
+  label_colour = "black",
+  label_repel = TRUE
+)
+
+res <- khcnet(dfm, edges = 80, community = "fast_greedy", fill_alpha = 0.6)
+res$plot
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
-
-``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
-```
-
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this.
-
-You can also embed plots, for example:
-
-<img src="man/figures/README-pressure-1.png" width="100%" />
-
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.
+<img src="man/figures/README-example-1.png" width="100%" />
