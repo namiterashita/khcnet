@@ -23,7 +23,7 @@ This is a basic example which shows you how to solve a common problem:
 library(khcnet)
 library(quanteda)
 
-corp <- quanteda::data_char_ukimmig2010
+corp <- quanteda::data_char_sampletext
 
 dfm  <- quanteda::tokens(corp)|>
   tokens_remove(stopwords("en", source = "marimo"))|>
