@@ -1,12 +1,12 @@
 Package: khcnet
 Type: Package
 Title: KH Coder-style Co-occurrence Network Visualization
-Version: 0.1.0
+Version: 0.1.2
 Authors@R:
     person("Kazuhiro", "Terashita",
            role = c("aut", "cre"),
-           email = "your@email",
-           comment = c(ORCID = "0000-0000-0000-0000"))
+           email = "kazuhiroterashita@outlook.jp",
+           comment = c(ORCID = "0009-0003-3657-1673"))
 Description:
     Provides reproducible, publication-ready co-occurrence network
     visualization inspired by KH Coder, optimized for quanteda,
