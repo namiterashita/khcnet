@@ -2,7 +2,7 @@
 #'
 #' Build and plot a KH Coder-like co-occurrence network from a quanteda dfm.
 #' - Community detection (fast_greedy / walktrap / edge_betweenness)
-#' - Within-community vs between-community edges (solid vs dotted) [KH Coder rule]
+#' - #' - Within-community vs between-community edges (solid vs dotted) (KH Coder rule)
 #' - Color mode vs grayscale printing mode (node fill)
 #' - Option to control node fill transparency in color mode
 #' - CJK font family and label color options

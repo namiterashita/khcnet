@@ -14,10 +14,10 @@ khcnet(
   remove_isolates = TRUE,
   use_freq_as_size = TRUE,
   bubble_size = 100,
-  show_size_legend = FALSE,
   bw_groups = FALSE,
-  bw_intercommunity_linetype = c("dotted", "solid"),
-  fill_alpha = 0.8,
+  fill_alpha = 0.75,
+  show_size_legend = FALSE,
+  show_linetype_legend = FALSE,
   font_family = "sans",
   label_colour = "black",
   label_repel = TRUE,
@@ -44,20 +44,21 @@ khcnet(
 
 \item{bubble_size}{Multiplier for node size (affects max size).}
 
-\item{show_size_legend}{If TRUE, show node-size (frequency) legend.}
+\item{bw_groups}{If TRUE, grayscale printing mode for node fill.}
 
-\item{bw_groups}{If TRUE, grayscale printing mode.}
+\item{fill_alpha}{In color mode (bw_groups = FALSE), node fill alpha in \link{0, 1}.
+Ignored in grayscale mode.}
 
-\item{bw_intercommunity_linetype}{In bw_groups mode, inter-community edge linetype:
-"dotted" (default) or "solid".}
+\item{show_size_legend}{If TRUE, show size legend for node frequency when use_freq_as_size = TRUE.}
 
-\item{fill_alpha}{Node fill alpha in color mode (0–1). Ignored if bw_groups = TRUE.}
+\item{show_linetype_legend}{If TRUE, show legend for edge linetypes:
+solid = within-community co-occurrence; dotted = between-community co-occurrence.}
 
-\item{font_family}{Font family for node labels.}
+\item{font_family}{Font family for node labels (e.g., "Noto Sans CJK JP", "Noto Sans CJK KR").}
 
-\item{label_colour}{Color for node labels.}
+\item{label_colour}{Color for node labels (e.g., "black", "gray20", "#333333").}
 
-\item{label_repel}{If TRUE, repel node labels.}
+\item{label_repel}{If TRUE, repel node labels (requires ggrepel; falls back if missing).}
 
 \item{label_size}{Numeric label size.}
 }
@@ -68,10 +69,11 @@ A list with graph, tbl_graph, plot, info.
 Build and plot a KH Coder-like co-occurrence network from a quanteda dfm.
 \itemize{
 \item Community detection (fast_greedy / walktrap / edge_betweenness)
-\item Within-community vs between-community edges (solid vs dotted)
-\item Grayscale-print mode (node fill in greys)
-\item Optional node-size (frequency) legend
-\item Optional node fill transparency in color mode
+\item #' - Within-community vs between-community edges (solid vs dotted) (KH Coder rule)
+\item Color mode vs grayscale printing mode (node fill)
+\item Option to control node fill transparency in color mode
 \item CJK font family and label color options
+\item Option to show size legend for node frequency
+\item Option to show/hide edge linetype legend with fixed meanings
 }
 }
